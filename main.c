@@ -16,27 +16,34 @@ static str8 read_line(FILE *in, arena *a) {
   return line.str;
 }
 
-extern void day1(signal act, str8 next_input, arena *a);
+extern void day1(signal act, str8 next_input, arena *a, arena scratch);
+extern void day2(signal act, str8 next_input, arena *a, arena scratch);
 
 #define SOLVE_DAY(n)                                                           \
   do {                                                                         \
-    arena work = main_arena;                                                   \
+    arena persistent = main_arena;                                             \
+    arena scratch = scratch_arena;                                             \
     FILE *day##n##_input = fopen("inputs/day" #n ".txt", "rb");                \
     assert(day##n##_input);                                                    \
-    day##n(BEGIN_SIGNAL, (str8){0}, NULL);                                     \
-    str8 input = read_line(day##n##_input, &work);                             \
+    day##n(BEGIN_SIGNAL, (str8){0}, &persistent, scratch);                     \
+    str8 input = read_line(day##n##_input, &scratch);                          \
     while (input.len) {                                                        \
-      day##n(DATA_SIGNAL, input, &work);                                       \
-      input = read_line(day##n##_input, &work);                                \
+      day##n(DATA_SIGNAL, input, &persistent, scratch);                        \
+      scratch = scratch_arena;                                                 \
+      input = read_line(day##n##_input, &scratch);                             \
     }                                                                          \
-    day##n(END_SIGNAL, (str8){0}, NULL);                                       \
+    day##n(END_SIGNAL, (str8){0}, &persistent, scratch_arena);                 \
   } while (0);
 
 int main() {
-  arena main_arena = {.begin = malloc(1 << 18),
-                      .end = main_arena.begin + (1 << 18)};
+  arena main_arena = {.begin = malloc(1 << 16),
+                      .end = main_arena.begin + (1 << 16)};
+  arena scratch_arena = {.begin = malloc(1 << 12),
+                         .end = scratch_arena.begin + (1 << 12)};
 
   SOLVE_DAY(1);
+  SOLVE_DAY(2);
 
   free(main_arena.begin);
+  free(scratch_arena.begin);
 }

@@ -51,7 +51,7 @@ static void finalize() {
   finalize_part2();
 }
 
-void day1(signal act, str8 next_input, arena *a) {
+void day1(signal act, str8 next_input, arena *a, arena scratch) {
   if (act == BEGIN_SIGNAL) {
     list1 = (i32s){0};
     list2 = (i32s){0};
@@ -60,10 +60,12 @@ void day1(signal act, str8 next_input, arena *a) {
     finalize();
     printf("Day 1, Part 1: sum = %ld\n", part1_sum);
     printf("Day 1, Part 2: similarity score = %ld\n", part2_similarity_score);
+    assert(part1_sum == 2756096);
+    assert(part2_similarity_score == 23117829l);
     return;
   }
 
-  str8s tokens = str8_split(next_input, a);
+  str8s tokens = str8_split(next_input, &scratch);
   assert(tokens.len == 2);
 
   i32 first = str8_to_i64(tokens.data[0]);
