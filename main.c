@@ -33,8 +33,8 @@ extern void day1(signal act, str8 next_input, arena *a);
   } while (0);
 
 int main() {
-  arena main_arena = {.begin = malloc(1 << 16),
-                      .end = main_arena.begin + (1 << 16)};
+  arena main_arena = {.begin = malloc(1 << 18),
+                      .end = main_arena.begin + (1 << 18)};
 
   SOLVE_DAY(1);
 
