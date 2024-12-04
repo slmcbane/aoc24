@@ -60,20 +60,12 @@ str8s str8_split(str8 s, arena *a) {
 }
 
 i64 str8_to_i64(str8 s) {
-  const char digits[] = "0123456789";
   i64 result = 0;
   i64 power = 1;
 
   for (i32 i = s.len - 1; i >= 0; --i, power *= 10) {
-    for (i32 j = 0; j < (i32)sizeof(digits); ++j) {
-      if (s.data[i] == digits[j]) {
-        result += j * power;
-        goto loop;
-      }
-    }
-    assert(0 && "non-digit character");
-  loop:
-    continue;
+    assert(s.data[i] >= '0' && s.data[i] <= '9' && "non-digit character");
+    result += (s.data[i] - '0') * power;
   }
 
   return result;

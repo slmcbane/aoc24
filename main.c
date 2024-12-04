@@ -18,6 +18,7 @@ static str8 read_line(FILE *in, arena *a) {
 
 extern void day1(signal act, str8 next_input, arena *a, arena scratch);
 extern void day2(signal act, str8 next_input, arena *a, arena scratch);
+extern void day3(signal act, str8 next_input, arena *a, arena scratch);
 
 #define SOLVE_DAY(n)                                                           \
   do {                                                                         \
@@ -38,11 +39,12 @@ extern void day2(signal act, str8 next_input, arena *a, arena scratch);
 int main() {
   arena main_arena = {.begin = malloc(1 << 16),
                       .end = main_arena.begin + (1 << 16)};
-  arena scratch_arena = {.begin = malloc(1 << 12),
-                         .end = scratch_arena.begin + (1 << 12)};
+  arena scratch_arena = {.begin = malloc(1 << 13),
+                         .end = scratch_arena.begin + (1 << 13)};
 
   SOLVE_DAY(1);
   SOLVE_DAY(2);
+  SOLVE_DAY(3);
 
   free(main_arena.begin);
   free(scratch_arena.begin);
