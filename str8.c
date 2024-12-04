@@ -29,6 +29,20 @@ void str8_builder_push(str8_builder *b, char c, arena *a) {
   b->str.data[b->str.len++] = c;
 }
 
+void str8_builder_append(str8_builder *b, str8 s, arena *a) {
+  i32 new_len = b->str.len + s.len;
+  if (b->cap < new_len) {
+    while (b->cap < new_len) {
+      b->cap *= 2;
+    }
+    char *old_data = b->str.data;
+    b->str.data = new (a, char, b->cap);
+    memcpy(b->str.data, old_data, b->str.len);
+  }
+  memcpy(b->str.data + b->str.len, s.data, s.len);
+  b->str.len = new_len;
+}
+
 str8s str8_split(str8 s, arena *a) {
   const char spaces[] = " \t\n\r";
   str8s tokens = {0};

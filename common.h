@@ -43,6 +43,7 @@ typedef struct {
 
 str8_builder str8_builder_init(arena *a, i32 count);
 void str8_builder_push(str8_builder *b, char c, arena *a);
+void str8_builder_append(str8_builder *b, str8 s, arena *a);
 
 typedef struct {
   str8 *data;

@@ -19,6 +19,7 @@ static str8 read_line(FILE *in, arena *a) {
 extern void day1(signal act, str8 next_input, arena *a, arena scratch);
 extern void day2(signal act, str8 next_input, arena *a, arena scratch);
 extern void day3(signal act, str8 next_input, arena *a, arena scratch);
+extern void day4(signal act, str8 next_input, arena *a, arena scratch);
 
 #define SOLVE_DAY(n)                                                           \
   do {                                                                         \
@@ -45,6 +46,7 @@ int main() {
   SOLVE_DAY(1);
   SOLVE_DAY(2);
   SOLVE_DAY(3);
+  SOLVE_DAY(4);
 
   free(main_arena.begin);
   free(scratch_arena.begin);
