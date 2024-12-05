@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -std=c11 -pedantic -g -fsanitize=address,undefined -Wno-unused-parameter
+CFLAGS = -Wall -Wextra -std=gnu11 -pedantic -g -fsanitize=address,undefined -Wno-unused-parameter
 #CFLAGS = -std=c11 -march=native -O3 -DNDEBUG -Wno-unused-parameter
 LDFLAGS += -fsanitize=address,undefined
 
