@@ -93,6 +93,8 @@ void day4(signal act, str8 line, arena *a, arena scratch) {
     counts result = count_occurrences(builder.str, rows, cols);
     printf("Day 4, Part 1: count = %ld\n", result.xmas_count);
     printf("Day 4, Part 2: count = %ld\n", result.x_mas_count);
+    assert(result.xmas_count == 2599);
+    assert(result.x_mas_count == 1948);
     return;
   }
 

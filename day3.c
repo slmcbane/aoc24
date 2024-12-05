@@ -163,6 +163,8 @@ void day3(signal act, str8 next_input, arena *a, arena scratch) {
   } else if (act == END_SIGNAL) {
     printf("Day 3, Part 1: sum = %ld\n", state.part1);
     printf("Day 3, Part 2: sum = %ld\n", state.part2);
+    assert(state.part1 == 164730528);
+    assert(state.part2 == 70478672);
     return;
   }
 

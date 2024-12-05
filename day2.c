@@ -116,6 +116,8 @@ void day2(signal act, str8 next_input, arena *persistent, arena scratch) {
   } else if (act == END_SIGNAL) {
     printf("Day 2, Part 1: safe count = %d\n", part1_safe_count);
     printf("Day 2, Part 2: safe count = %d\n", part2_safe_count);
+    assert(part1_safe_count == 369);
+    assert(part2_safe_count == 428);
     return;
   }
 
