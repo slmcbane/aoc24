@@ -153,20 +153,20 @@ static line_state line_sum(str8 line, line_state state_in) {
   return out;
 }
 
-void day3(signal act, str8 next_input, arena *a, arena scratch) {
-  static line_state state;
-  if (act == BEGIN_SIGNAL) {
-    state.part1 = 0;
-    state.part2 = 0;
-    state.enabled = true;
-    return;
-  } else if (act == END_SIGNAL) {
-    printf("Day 3, Part 1: sum = %ld\n", state.part1);
-    printf("Day 3, Part 2: sum = %ld\n", state.part2);
-    assert(state.part1 == 164730528);
-    assert(state.part2 == 70478672);
-    return;
+void day3(input_pipe *pipe, arena a) {
+  line_state state = {0};
+  state.enabled = true;
+  while (!pipe->eof) {
+    arena scratch = a;
+    str8 line = input_pipe_getline(pipe, &scratch).str;
+    if (line.len == 0) {
+      break;
+    }
+    state = line_sum(line, state);
   }
 
-  state = line_sum(next_input, state);
+  printf("Day 3, Part 1: sum = %ld\n", state.part1);
+  printf("Day 3, Part 2: sum = %ld\n", state.part2);
+  assert(state.part1 == 164730528);
+  assert(state.part2 == 70478672);
 }

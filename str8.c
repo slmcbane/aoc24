@@ -14,15 +14,15 @@ str8 *str8s_push(str8s *s, arena *a) {
 }
 
 str8_builder str8_builder_init(arena *a, i32 count) {
-  return (str8_builder){.str = {.data = new (a, char, count), .len = 0},
+  return (str8_builder){.str = {.data = new (a, byte, count), .len = 0},
                         .cap = count};
 }
 
 void str8_builder_push(str8_builder *b, char c, arena *a) {
   if (b->str.len == b->cap) {
-    char *old_data = b->str.data;
+    byte *old_data = b->str.data;
     b->cap *= 2;
-    b->str.data = new (a, char, b->cap);
+    b->str.data = new (a, byte, b->cap);
     memcpy(b->str.data, old_data, b->str.len);
   }
 
@@ -35,8 +35,8 @@ void str8_builder_append(str8_builder *b, str8 s, arena *a) {
     while (b->cap < new_len) {
       b->cap *= 2;
     }
-    char *old_data = b->str.data;
-    b->str.data = new (a, char, b->cap);
+    byte *old_data = b->str.data;
+    b->str.data = new (a, byte, b->cap);
     memcpy(b->str.data, old_data, b->str.len);
   }
   memcpy(b->str.data + b->str.len, s.data, s.len);
@@ -89,4 +89,12 @@ void fprint_str8(FILE *f, str8 s) {
   for (i32 i = 0; i < s.len; ++i) {
     fputc(s.data[i], f);
   }
+}
+
+str8 str8_concat(str8 a, str8 b, arena *arena) {
+  str8 result = {.data = new (arena, byte, a.len + b.len),
+                 .len = a.len + b.len};
+  memcpy(result.data, a.data, a.len);
+  memcpy(result.data + a.len, b.data, b.len);
+  return result;
 }

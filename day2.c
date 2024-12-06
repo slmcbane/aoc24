@@ -107,25 +107,27 @@ static i32s to_ints(str8s tokens, arena *scratch) {
   return result;
 }
 
-void day2(signal act, str8 next_input, arena *persistent, arena scratch) {
-  static i32 part1_safe_count, part2_safe_count;
-  if (act == BEGIN_SIGNAL) {
-    part1_safe_count = 0;
-    part2_safe_count = 0;
-    return;
-  } else if (act == END_SIGNAL) {
-    printf("Day 2, Part 1: safe count = %d\n", part1_safe_count);
-    printf("Day 2, Part 2: safe count = %d\n", part2_safe_count);
-    assert(part1_safe_count == 369);
-    assert(part2_safe_count == 428);
-    return;
+void day2(input_pipe *in, arena a) {
+  i32 part1_safe_count = 0;
+  i32 part2_safe_count = 0;
+
+  while (!in->eof) {
+    arena for_line = a;
+    str8 line = input_pipe_getline(in, &for_line).str;
+    if (line.len == 0) {
+      break;
+    }
+    i32s nums = to_ints(str8_split(line, &for_line), &for_line);
+    if (safe_report(nums)) {
+      part1_safe_count++;
+    }
+    if (safe_report_tolerant(nums, for_line)) {
+      part2_safe_count++;
+    }
   }
 
-  i32s nums = to_ints(str8_split(next_input, &scratch), &scratch);
-  if (safe_report(nums)) {
-    part1_safe_count++;
-  }
-  if (safe_report_tolerant(nums, scratch)) {
-    part2_safe_count++;
-  }
+  printf("Day 2, Part 1: safe count = %d\n", part1_safe_count);
+  printf("Day 2, Part 2: safe count = %d\n", part2_safe_count);
+  assert(part1_safe_count == 369);
+  assert(part2_safe_count == 428);
 }

@@ -79,29 +79,27 @@ static counts count_occurrences(str8 str, i32 rows, i32 cols) {
   return (counts){xmas_count, x_mas_count};
 }
 
-void day4(signal act, str8 line, arena *a, arena scratch) {
-  static i32 rows = 0;
-  static i32 cols = 0;
-  static str8_builder builder;
+void day4(input_pipe *pipe, arena a) {
+  i32 rows = 0;
+  i32 cols = 0;
+  arena scratch = {.begin = new (&a, byte, 256), scratch.begin + 256};
+  str8_builder builder = str8_builder_init(&a, 1024);
 
-  if (act == BEGIN_SIGNAL) {
-    rows = 0;
-    cols = 0;
-    builder = str8_builder_init(a, 1024);
-    return;
-  } else if (act == END_SIGNAL) {
-    counts result = count_occurrences(builder.str, rows, cols);
-    printf("Day 4, Part 1: count = %ld\n", result.xmas_count);
-    printf("Day 4, Part 2: count = %ld\n", result.x_mas_count);
-    assert(result.xmas_count == 2599);
-    assert(result.x_mas_count == 1948);
-    return;
+  while (!pipe->eof) {
+    arena for_line = scratch;
+    str8 line = input_pipe_getline(pipe, &for_line).str;
+    if (cols == 0) {
+      cols = line.len;
+    } else if (line.len == 0) {
+      break;
+    }
+    str8_builder_append(&builder, line, &a);
+    rows++;
   }
 
-  assert(line.len != 0);
-  if (cols == 0) {
-    cols = line.len;
-  }
-  str8_builder_append(&builder, line, a);
-  rows++;
+  counts result = count_occurrences(builder.str, rows, cols);
+  printf("Day 4, Part 1: count = %ld\n", result.xmas_count);
+  printf("Day 4, Part 2: count = %ld\n", result.x_mas_count);
+  assert(result.xmas_count == 2599);
+  assert(result.x_mas_count == 1948);
 }

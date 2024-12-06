@@ -14,12 +14,11 @@ typedef int64_t i64;
 typedef ptrdiff_t size;
 typedef uint32_t u32;
 typedef uint64_t u64;
-
-typedef enum { BEGIN_SIGNAL, DATA_SIGNAL, END_SIGNAL } signal;
+typedef unsigned char byte;
 
 typedef struct {
-  char *begin;
-  char *end;
+  byte *begin;
+  byte *end;
 } arena;
 
 // with credit to Chris Wellons' excellent article on arena allocation
@@ -29,12 +28,34 @@ void *arena_allocate(arena *a, size sz, size align, size count);
 #define new(a, T, n) ((T *)arena_allocate(a, sizeof(T), _Alignof(T), n))
 
 typedef struct {
-  char *data;
+  byte *data;
   i32 len;
 } str8;
 
 i64 str8_to_i64(str8 s);
 void fprint_str8(FILE *f, str8 s);
+str8 str8_concat(str8 a, str8 b, arena *arena);
+
+typedef struct {
+  byte input_page[4096];
+  int fd;
+  i32 input_start;
+  i32 input_end;
+  bool eof;
+} input_pipe;
+
+void input_pipe_init(input_pipe *pipe, const char *file_name);
+
+typedef struct {
+  str8 str;
+  bool in_arena;
+} getline_result;
+
+// Returns a view of the next line if it is entirely in the pipe's input buffer,
+// otherwise constructs the line in the arena.
+getline_result input_pipe_getline(input_pipe *pipe, arena *a);
+int input_pipe_next(input_pipe *pipe);
+void input_pipe_deinit(input_pipe *pipe);
 
 typedef struct {
   str8 str;
