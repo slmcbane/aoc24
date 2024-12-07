@@ -84,27 +84,4 @@ typedef struct {
 
 void i32s_push(i32s *is, i32 i, arena *a);
 
-typedef struct hashtable_node hashtable_node;
-
-struct hashtable_node {
-  hashtable_node *children[4];
-  intptr_t key;
-  intptr_t value;
-};
-
-typedef struct {
-  hashtable_node *root;
-} hashtable;
-
-typedef struct {
-  hashtable_node *node;
-  bool inserted;
-} hashtable_result;
-
-typedef bool (*ht_predicate)(intptr_t, intptr_t);
-typedef u64 (*ht_hash)(intptr_t);
-
-hashtable_result find_or_insert(hashtable *ht, intptr_t key, intptr_t value,
-                                ht_hash hash, ht_predicate comp, arena *a);
-
 #endif // AOC_COMMON_H
