@@ -183,4 +183,5 @@ void day6(input_pipe *pipe, arena a) {
   i32 part2_count = solve_part2(start_pos, rows, columns, obstructions, visited,
                                 part2_visited);
   printf("Day 6, Part 2: count = %d\n", part2_count);
+  assert(part2_count == 1789);
 }
