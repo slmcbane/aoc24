@@ -81,10 +81,16 @@ getline_result input_pipe_getline(input_pipe *pipe, arena *a) {
     }
   } while (endline == NULL && !pipe->eof);
 
-  int off = (byte *)endline - pipe->input_page;
-  pipe->input_start = off + 1;
-  str8 next_part = {.data = pipe->input_page, .len = off};
-
-  return (getline_result){.str = str8_concat(first_part, next_part, a),
-                          .in_arena = true};
+  if (endline) {
+    assert(!pipe->eof);
+    int off = (byte *)endline - pipe->input_page;
+    pipe->input_start = off + 1;
+    str8 next_part = {.data = pipe->input_page, .len = off};
+    return (getline_result){.str = str8_concat(first_part, next_part, a),
+                            .in_arena = true};
+  } else {
+    assert(pipe->eof);
+    assert(pipe->input_start == pipe->input_end);
+    return (getline_result){.str = first_part, .in_arena = true};
+  }
 }
