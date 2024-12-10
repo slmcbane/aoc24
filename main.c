@@ -24,7 +24,7 @@ extern void day8(input_pipe *in, arena a);
     u64 start = nanoseconds_count();                                           \
     day##n(&pipe, main_arena);                                                 \
     u64 end = nanoseconds_count();                                             \
-    printf("  time for day " #n ": %f us\n", (end - start) / 1000.0);          \
+    printf("  time for day " #n ": %ld us\n", (end - start) / 1000);           \
     input_pipe_deinit(&pipe);                                                  \
   } while (0);
 
