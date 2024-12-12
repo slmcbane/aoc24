@@ -30,8 +30,8 @@ extern void day9(input_pipe *in, arena a);
   } while (0);
 
 int main() {
-  arena main_arena = {.begin = malloc(1 << 16),
-                      .end = main_arena.begin + (1 << 16)};
+  arena main_arena = {.begin = malloc(1 << 19),
+                      .end = main_arena.begin + (1 << 19)};
 
   SOLVE_DAY(1);
   SOLVE_DAY(2);
