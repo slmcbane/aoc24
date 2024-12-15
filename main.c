@@ -17,6 +17,7 @@ extern void day6(input_pipe *in, arena a);
 extern void day7(input_pipe *in, arena a);
 extern void day8(input_pipe *in, arena a);
 extern void day9(input_pipe *in, arena a);
+extern void day10(input_pipe *in, arena a);
 
 #define SOLVE_DAY(n)                                                           \
   do {                                                                         \
@@ -42,6 +43,7 @@ int main() {
   SOLVE_DAY(7);
   SOLVE_DAY(8);
   SOLVE_DAY(9);
+  SOLVE_DAY(10);
 
   free(main_arena.begin);
 }
